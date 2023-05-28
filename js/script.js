@@ -2,33 +2,93 @@ console.log('JS OK')
 
 /* 
 - 0 recupero l'elemento da DOM
-- 1 Chiedere all'utente tramite il prompt i km che vuole percorrere.
-- 2 Chiedere all'utente tramite il prompt la sua età.
-- 3 Calcolare il prezzo del biglietto al netto degli sconti.
-- 4 Stabilire se l'utente ha diritto a sconti (young o over).
-- 5 "Normalizzare" il risultato (solo 2 decimali)  
-- 6 Stampare il risultato in pagina   
+- 1 Inizializzo tutte le variabili
+- 2 Chiedere all'utente tramite il prompt i km che vuole percorrere.
+- 3 Chiedere all'utente tramite il prompt la sua età.
+- 4 Calcolare il prezzo del biglietto al lordo degli sconti.
+- 5 Stabilire se l'utente ha diritto a sconti (young o over).
+    5a SE l'età dell'utente è minore di 18 anni applico lo sconto young.
+    5b SE l'età dell'utente è maggiore di 65 anni applico lo sconto over.
+- 6 "Normalizzare" il risultato (solo 2 decimali)  
+- 7 Stampare il risultato in pagina   
 */ 
 
 // # 0
 const PrinceDiscounted = document.getElementById ('prince-discounted');
 
 // # 1
-const KMtoTravel  = prompt('Quanti km vuoi percorrere?');
-console.log(KMtoTravel);
+const discountYoung = 20; // variabile sconto giovani
+const discountOver = 40;  // variabile sconto anziani
+let grossPrice;    // prezzo biglietto lordo
+
+let discount;       // sconto applicato
+let totalPrince;    // prezzo finale
+
+let rounded;
 
 
 // # 2
-const youAge  = prompt('Quanti anni hai?');
-console.log(youAge);
+const KMtoTravel = parseInt(prompt('Quanti km vuoi percorrere?'));
+console.log(KMtoTravel);
 
 // # 3
-
+const youAge = parseInt(prompt('Quanti anni hai?'));
+console.log(youAge);
 
 // # 4
 
+grossPrice =  KMtoTravel * 0.21;
+console.log(typeof grossPrice);
 
 // # 5
 
+    // nessun sconto
+if (youAge >= 18 && youAge <= 65)
+    {
+        totalPrince = grossPrice;
+        console.log(totalPrince);
+        discount = 0;
+    }  
+ // sconto young
+else if (youAge <= 65)
+    {
+        totalPrince = grossPrice - ((grossPrice / 100) * 20);
+        totalPrince = Math.round((totalPrince + Number.EPSILON) * 100) / 100;
+        console.log(totalPrince);
+        discount = 20;
+    }
+  // sconto over
+else if  (youAge  >= 18)
+    {
+        totalPrince = grossPrice - ((grossPrice / 100) * 40);
+        totalPrince = Math.round((totalPrince + Number.EPSILON) * 100) / 100;
+        console.log(totalPrince);
+        discount = 40;
+    }
 
 // # 6
+
+
+// # 7
+console.log(
+ `
+    <p class="intro"">Ciao, in base alle tue preferenze di viaggio (${KMtoTravel}Km da percorrere) e età anagrafica inserita: (${youAge }) anni,<br>
+    Siamo lieti di proporle la nostra miglior proposta.</p>
+    <hr>
+    <p class="prince">Prezzo del biglietto: ${grossPrice} €<p>
+    <p class="discount"> Sconto applicato: ${discount}%</p>
+    <hr>
+    <p class="total-prince"> Totale d pagare: ${totalPrince} €<p>
+`
+);
+
+document.getElementById ('prince-table').innerHTML = 
+    `
+    <p class="intro"">Ciao, in base alle tue preferenze di viaggio (${KMtoTravel}Km da percorrere) e età anagrafica inserita: (${youAge }) anni,<br>
+    Siamo lieti di proporle la nostra miglior proposta.</p>
+    <hr>
+    <p class="prince">Prezzo del biglietto: ${grossPrice} €<p>
+    <p class="discount"> Sconto applicato: ${discount}%</p>
+    <hr>
+    <p class="total-prince"> Totale d pagare: ${totalPrince} €<p>
+`;
